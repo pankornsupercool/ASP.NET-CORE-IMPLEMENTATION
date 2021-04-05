@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ASP.NET_Implementation.Data;
 using ASP.NET_Implementation.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASP.NET_Implementation.Controllers
 {
@@ -23,6 +24,15 @@ namespace ASP.NET_Implementation.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Joke.ToListAsync());
+        }
+        public async Task<IActionResult> ShowSearchForm()
+        {
+            return View();
+        }
+        public async Task<IActionResult> ShowSearchResults(string SearchPhrase)
+        {
+            //return View("Index", await _context.Joke.Where(j => j.Question.Contains(SearchPhrase)).ToListAsync());
+            return View("Details", await _context.Joke.ToListAsync());
         }
 
         // GET: Jokes/Details/5
@@ -44,6 +54,7 @@ namespace ASP.NET_Implementation.Controllers
         }
 
         // GET: Jokes/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -66,6 +77,7 @@ namespace ASP.NET_Implementation.Controllers
         }
 
         // GET: Jokes/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -117,6 +129,7 @@ namespace ASP.NET_Implementation.Controllers
         }
 
         // GET: Jokes/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
